@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['post_id'], $_POST['co
             echo json_encode([
                 "success" => false,
                 "message" => "Database error",
-                "error" => $e->getMessage() // 👀 will show in JSON, not HTML
+                "error" => $e->getMessage() 
             ]);
         }
         exit;

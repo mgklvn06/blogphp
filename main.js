@@ -47,7 +47,7 @@ document.querySelectorAll('.like-btn').forEach(button => {
     button.addEventListener('click', async function () {
         const icon = this.querySelector('i');
         const countSpan = this.querySelector('span');
-        const postId = this.dataset.postid;
+        const postId = this.dataset.postid; 
 
         const formData = new FormData();
         formData.append("post_id", postId);
@@ -57,10 +57,15 @@ document.querySelectorAll('.like-btn').forEach(button => {
                 method: "POST",
                 body: formData
             });
-            const data = await response.json(); // 👈 parse JSON
+
+            const text = await response.text(); 
+            console.log("Raw response:", text); 
+
+            const data = JSON.parse(text);
 
             if (data.success) {
-                countSpan.textContent = data.count; // 👈 update from DB
+                countSpan.textContent = data.count;
+
                 if (data.liked) {
                     this.classList.add('liked');
                     icon.classList.remove('far');
@@ -71,10 +76,10 @@ document.querySelectorAll('.like-btn').forEach(button => {
                     icon.classList.add('far');
                 }
             } else {
-                console.error("Like failed:", data.message);
+                console.error("Like failed:", data.message, data.error);
             }
         } catch (err) {
-            console.error("Like failed:", err);
+            console.error("Like failed (JS):", err);
         }
     });
 });
